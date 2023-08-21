@@ -9,6 +9,21 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
+      - name: Get branch name
+        id: branch_name
+        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+      - name: mearge staging
+        if: contains(github.event.comment.body, '/qa')
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo ,
+              base: 'staging',
+              head: steps.branch_name.outputs.BRANCH_NAME,
+            });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
@@ -21,3 +36,12 @@ jobs:
               repo: context.repo.repo,
               body: '🚀'
             })
+
+# gh api \
+#   --method POST \
+#   -H "Accept: application/vnd.github+json" \
+#   --hostname HOSTNAME \
+#   /repos/OWNER/REPO/merges \
+#   -f base='master' \
+#  -f head='cool_feature' \
+#  -f commit_message='Shipped cool_feature!'
