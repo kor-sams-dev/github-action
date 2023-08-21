@@ -16,6 +16,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log(JSON.stringify(context))
+            console.log('vars', JSON.stringify(${{ vars }}))
+            console.log('inputs', JSON.stringify(${{ inputs }}))
+            console.log('job',JSON.stringify(${{ job }}))
+            console.log('github',JSON.stringify(${{ github }}))
       # - name: Get Pull Request
       #   id: extract_branch
       #   uses: actions/github-script@v5
