@@ -9,33 +9,29 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v6
-
-      - name: Running on the default branch.
-        if: steps.branch-name.outputs.is_default == 'true'
-        run: |
-          echo "Running on default: ${{ steps.branch-name.outputs.current_branch }}"
-        # Outputs: "Running on default: main".
-
-      - name: Running on a pull request branch.
-        if: steps.branch-name.outputs.is_default == 'false'
-        run: |
-          echo "Running on pr: ${{ steps.branch-name.outputs.current_branch }}"
-        # Outputs: "Running on pr: feature/test".
-      - name: mearge staging
-        if: contains(github.event.comment.body, '/qa')
+      - name: Get Pull Request
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.repos.merge({
+            echo rest.pulls.get({
               owner: context.repo.owner,
-              repo: context.repo.repo ,
-              base: 'staging',
-              head: 'feature'
+              repo: context.repo.repo,
+              pull_number: context.issue.number
             });
+
+      # - name: mearge staging
+      #   if: contains(github.event.comment.body, '/qa')
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       github.rest.repos.merge({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo ,
+      #         base: 'staging',
+      #         head: 'feature'
+      #       });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
