@@ -19,7 +19,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: ${{ github.head_ref }}
+              head: '${{ github.head_ref }}'
             });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
