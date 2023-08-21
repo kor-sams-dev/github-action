@@ -11,11 +11,10 @@ jobs:
     steps:
       - name: branch
         run: |
-          echo ${{ github.event.issue.pull_request.diff_url }}
-          echo ${{ github.event.issue.pull_request.html_url }}
-          echo ${{ github.event.issue.pull_request.merged_at }}
-          echo ${{ github.event.issue.pull_request.patch_url }}
-          echo ${{ github.event.issue.pull_request.url }}
+          # 브랜치 명칭 출력
+          echo "branch name: ${{ github.head_ref }}"
+          # issue comment의 head 브랜치명 출력
+          echo "issue comment head branch name: ${{ github.event.comment.head_ref }}"
       - name: mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
