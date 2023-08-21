@@ -22,7 +22,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: ${{steps.branch_name.outputs.BRANCH_NAME}},
+              head: 'feature',
             });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
@@ -36,12 +36,3 @@ jobs:
               repo: context.repo.repo,
               body: '🚀'
             })
-
-# gh api \
-#   --method POST \
-#   -H "Accept: application/vnd.github+json" \
-#   --hostname HOSTNAME \
-#   /repos/OWNER/REPO/merges \
-#   -f base='master' \
-#  -f head='cool_feature' \
-#  -f commit_message='Shipped cool_feature!'
