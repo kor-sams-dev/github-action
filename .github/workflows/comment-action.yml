@@ -11,7 +11,12 @@ jobs:
     steps:
       - name: Get branch name
         id: branch_name
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = github.context.payload.issue.pull_request.head.ref;
+            return { BRANCH_NAME: branch };
       - name: mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
@@ -22,7 +27,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: 'feature',
+              head: '${{ steps.branch_name.outputs.BRANCH_NAME }}',
             });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
