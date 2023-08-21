@@ -9,12 +9,10 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
-      - name: branch
-        run: |
-          # 브랜치 명칭 출력
-          echo "branch name: ${{ github.head_ref }}"
-          # issue comment의 head 브랜치명 출력
-          echo "issue comment head branch name: ${{ github.event.comment.head_ref }}"
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - name: mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
@@ -25,7 +23,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: '${{ github.head_ref }}'
+              head: '${{ steps.extract_branch.outputs.branch }}'
             });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
