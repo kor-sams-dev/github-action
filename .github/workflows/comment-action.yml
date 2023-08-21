@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Pull Request
+        id: extract_branch
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -19,20 +20,20 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
-            console.log(issue.data.head.ref);
+          run: echo "branch=issue"
+      - name: mearge staging
+        if: contains(github.event.comment.body, '/qa')
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo ,
+              base: 'staging',
+              head: '${{ steps.extract_branch.outputs.branch.data.head.ref }}'
+            });
 
-      # - name: mearge staging
-      #   if: contains(github.event.comment.body, '/qa')
-      #   uses: actions/github-script@v5
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       github.rest.repos.merge({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo ,
-      #         base: 'staging',
-      #         head: 'feature'
-      #       });
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
