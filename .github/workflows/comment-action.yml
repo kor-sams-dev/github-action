@@ -9,6 +9,10 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
+      - name: branch
+        run: |
+          echo ${{ github.head_ref }}
+          echo ${{ github.base_ref }}
       - name: mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
