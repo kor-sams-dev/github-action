@@ -9,3 +9,7 @@
 - Setting > Actions > General 의 권한을 모두 부여함.
 - 성공.
 - [ ] 깃헙 코멘트로 staging branch에 병합하는 방법 찾기.
+- Action 수정완료
+- 참고 링크
+  - [octokit](https://octokit.github.io/rest.js/v20#repos)
+  - [blog](https://eunjin3786.tistory.com/194)
