@@ -14,11 +14,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.pulls.get({
+            const issue = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
+            console.log(issue.data.head.ref);
 
       # - name: mearge staging
       #   if: contains(github.event.comment.body, '/qa')
