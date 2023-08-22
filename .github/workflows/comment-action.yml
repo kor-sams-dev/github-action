@@ -20,7 +20,10 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
-            return issue.data.head.ref
+            return {
+              ref: issue.data.head.ref
+            }
+
       - name: mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
@@ -32,7 +35,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: '${{ steps.pull_request.outputs }}'
+              head: '${{ steps.pull_request.outputs.ref }}'
             });
 
       - name: During QA
