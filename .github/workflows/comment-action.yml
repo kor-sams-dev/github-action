@@ -28,16 +28,18 @@ jobs:
 
       - name: Mearge staging
         if: contains(github.event.comment.body, '/qa')
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.repos.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo ,
-              base: 'staging',
-              head: 'feature/TWIP-0000'
-            });
+        run: |
+          echo ${{ steps.pull_request.outputs.ref }}
+        # uses: actions/github-script@v5
+        # with:
+        #   github-token: ${{ secrets.GITHUB_TOKEN }}
+        # script: |
+        # github.rest.repos.merge({
+        #   owner: context.repo.owner,
+        #   repo: context.repo.repo ,
+        #   base: 'staging',
+        #   head: 'feature/TWIP-0000'
+        # });
 
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
