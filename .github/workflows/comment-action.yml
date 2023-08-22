@@ -35,7 +35,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: '${{ steps.pull_request.outputs.ref }}'
+              head: ref
             });
 
       - name: During QA
