@@ -22,4 +22,6 @@
   - PR 정보를 받아와서 활용하는 형태로 작업 해보려고 함.
     - 성공함
     - script 한개에서 모두 끝내는 형태로 작업을 마무리함.
-- [ ] staging에 병합하고나면 `During QA`라벨 추가되도록 Action 추가
+- [x] staging에 병합하고나면 `During QA`라벨 추가되도록 Action 추가
+  - During QA 라벨 추가되는 것 확인
+  - 중복으로 생성되지 않는지 확인
