@@ -15,6 +15,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            # 현재 Pull Request에 대한 정보 불러오기
             const issue = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -22,6 +23,7 @@ jobs:
             });
             if(!issue.data.head.ref.includes('feature')) return
 
+            # staging 브랜치로 현재 PR의 feature 브랜치를 병합
             await github.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo ,
@@ -30,12 +32,15 @@ jobs:
             });
 
             try{
+              # During QA 라벨이 있는지 확인
               await github.rest.issues.getLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 name: 'During QA'
               });
             } catch(e) {
+              # 없으면 에러가 발생함 
+              # During QA 라벨 생성
               await github.rest.issues.createLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -44,6 +49,7 @@ jobs:
               });
             }
 
+            # During QA 라벨을 현재 PR에 추가
             await github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -51,6 +57,7 @@ jobs:
               labels: ['During QA']
             });
 
+            # staging 브랜치에 병합 완료 메시지 남기기
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
