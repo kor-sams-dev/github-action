@@ -27,7 +27,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log(JSON.stringify(${{ steps.pull_request.outputs }}));
+            console.log(${{ steps.pull_request.outputs }});
             github.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo ,
