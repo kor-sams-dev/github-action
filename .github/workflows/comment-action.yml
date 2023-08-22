@@ -29,13 +29,13 @@ jobs:
               head: issue.data.head.ref
             });
 
-            const duringQALabel = await github.rest.issues.getLabel({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'During QA'
-            });
-
-            if(!duringQALabel){
+            try{
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'During QA'
+              });
+            } catch(e) {
               await github.rest.issues.createLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
