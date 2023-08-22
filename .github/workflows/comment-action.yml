@@ -9,9 +9,8 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
-      - name: Get Pull Request
+      - name: Mearge staging
         if: contains(github.event.comment.body, '/qa')
-        id: pull_request
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -21,25 +20,12 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
-            console.log(issue.data.head.ref)
-            return {
-              ref: issue.data.head.ref
-            }
-
-      - name: Mearge staging
-        if: contains(github.event.comment.body, '/qa')
-        run: |
-          echo ${{ steps.pull_request.outputs.ref }}
-        # uses: actions/github-script@v5
-        # with:
-        #   github-token: ${{ secrets.GITHUB_TOKEN }}
-        # script: |
-        # github.rest.repos.merge({
-        #   owner: context.repo.owner,
-        #   repo: context.repo.repo ,
-        #   base: 'staging',
-        #   head: 'feature/TWIP-0000'
-        # });
+            github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo ,
+              base: 'staging',
+              head: issue.data.head.ref
+            });
 
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
