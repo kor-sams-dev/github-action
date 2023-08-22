@@ -71,7 +71,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            # During QA 라벨을 삭제
             await github.rest.issues.deleteLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
