@@ -25,3 +25,4 @@
 - [x] staging에 병합하고나면 `During QA`라벨 추가되도록 Action 추가
   - During QA 라벨 추가되는 것 확인
   - 중복으로 생성되지 않는지 확인
+    - 이미 있는 label이여서 에러가 발생함 수정 필요
