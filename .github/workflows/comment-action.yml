@@ -20,18 +20,19 @@ jobs:
             console.log('inputs', JSON.stringify(${{ inputs }}))
             console.log('job',JSON.stringify(${{ job }}))
             console.log('github',JSON.stringify(${{ github }}))
-      # - name: Get Pull Request
-      #   id: extract_branch
-      #   uses: actions/github-script@v5
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const issue = await github.rest.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: context.issue.number
-      #       });
-      #     run: echo "branch=issue"
+      - name: Get Pull Request
+        id: pull_request
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            console.log(issue.data.head.ref)
+            return issue.data.head.ref
 
       # - name: mearge staging
       #   if: contains(github.event.comment.body, '/qa')
