@@ -64,15 +64,31 @@ jobs:
               repo: context.repo.repo,
               body: 'staging에 병합 완⭐️료'
             })
-
       - name: Merge Pull Request
         if: contains(github.event.comment.body, '/mg')
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            # 현재 PR 병합
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              merge_method: 'merge'
+            });
+
+            # During QA 라벨을 삭제
             await github.rest.issues.deleteLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'During QA'
+            });
+
+            # staging 브랜치에 병합 완료 메시지 남기기
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'PR 종료!'
             });
