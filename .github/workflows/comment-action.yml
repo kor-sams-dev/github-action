@@ -9,17 +9,6 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     steps:
-      - name: Get compare branch
-        id: extract_branch
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            console.log(JSON.stringify(context))
-            console.log('vars', JSON.stringify(${{ vars }}))
-            console.log('inputs', JSON.stringify(${{ inputs }}))
-            console.log('job',JSON.stringify(${{ job }}))
-            console.log('github',JSON.stringify(${{ github }}))
       - name: Get Pull Request
         id: pull_request
         uses: actions/github-script@v5
@@ -31,21 +20,19 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
-            console.log(issue.data.head.ref)
             return issue.data.head.ref
-
-      # - name: mearge staging
-      #   if: contains(github.event.comment.body, '/qa')
-      #   uses: actions/github-script@v5
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       github.rest.repos.merge({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo ,
-      #         base: 'staging',
-      #         head: ''
-      #       });
+      - name: mearge staging
+        if: contains(github.event.comment.body, '/qa')
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo ,
+              base: 'staging',
+              head: '${{ steps.pull_request.outputs }}'
+            });
 
       - name: During QA
         if: contains(github.event.comment.body, '/qa')
