@@ -29,12 +29,20 @@ jobs:
               head: issue.data.head.ref
             });
 
-            await github.rest.issues.createLabel({
+            const duringQALabel = await github.rest.issues.getLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'During QA',
-              color: 'ff0000'
+              name: 'During QA'
             });
+
+            if(!duringQALabel){
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'During QA',
+                color: 'ff0000'
+              });
+            }
 
             await github.rest.issues.addLabels({
               issue_number: context.issue.number,
