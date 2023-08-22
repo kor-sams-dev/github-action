@@ -74,6 +74,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
+              merge_method: 'merge'
             });
 
             # During QA 라벨을 삭제
@@ -89,4 +90,4 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'PR 종료!'
-            })
+            });
