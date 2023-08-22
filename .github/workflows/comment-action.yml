@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Pull Request
+        if: contains(github.event.comment.body, '/qa')
         id: pull_request
         uses: actions/github-script@v5
         with:
@@ -20,22 +21,22 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
+            console.log(issue.data.head.ref)
             return {
               ref: issue.data.head.ref
             }
 
-      - name: mearge staging
+      - name: Mearge staging
         if: contains(github.event.comment.body, '/qa')
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const ref = "${{ steps.pull_request.outputs.ref }}";
             github.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo ,
               base: 'staging',
-              head: ref
+              head: 'feature/TWIP-0000'
             });
 
       - name: During QA
