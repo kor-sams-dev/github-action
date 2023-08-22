@@ -30,7 +30,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log(${{ steps.pull_request.outputs }});
+            const ref = "${{ steps.pull_request.outputs.ref }}";
             github.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo ,
