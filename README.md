@@ -11,8 +11,10 @@
 - [x] 깃헙 코멘트로 staging branch에 병합하는 방법 찾기.
 - Action 수정완료
 - 참고 링크
+  - [Github docs](https://docs.github.com/en/rest?apiVersion=2022-11-28)
   - [octokit](https://octokit.github.io/rest.js/v20#repos)
   - [blog](https://eunjin3786.tistory.com/194)
+  - octokit에서 만들어둔 script를 활용하여 작성 함.
 - 병합하는 Action까지는 작성 완료
 - 대상 브랜치의 명칭을 동적으로 받아와 설정할 수 있도록 작업해야 함.
 - [x] 동적으로 대상 브랜치 명 가져올 수 있도록 수정
@@ -39,3 +41,5 @@
   - `/qa`는 너무 흔함.
   - `/qa go`로 수정
 - [ ] PR 닫을 때 origin 브랜치 삭제되도록 구문 추가.
+  - REST API가 없음.
+  - 불가.
