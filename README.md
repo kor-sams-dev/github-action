@@ -27,11 +27,15 @@
   - 중복으로 생성되지 않는지 확인
     - 이미 있는 label이여서 에러가 발생함 수정 필요
     - 에러 발생하지 않도록 수정
-- [ ] Comment로 /mg를 달면 PR을 병합하고, During QA 라벨을 제거 한 뒤 Comment를 추가하는 Action 추가
+- [x] Comment로 /mg를 달면 PR을 병합하고, During QA 라벨을 제거 한 뒤 Comment를 추가하는 Action 추가
   - 실패!
     - PR을 닫는 권한이 없어서 에러가 발생하는것으로 추정됨.
     - `SyntaxError: Invalid or unexpected token`
   - 불가능 할 것으로 예상됨
-- [ ] QA 코멘트 수정
+  - 성공!!!!!
+    - 주석을 #으로 써서 생기는 현상
+    - 주석을 js 문법에 맞게 작성 완료 및 적용 완료
+- [x] QA 코멘트 수정
   - `/qa`는 너무 흔함.
   - `/qa go`로 수정
+- [ ] PR 닫을 때 origin 브랜치 삭제되도록 구문 추가.
