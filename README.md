@@ -31,3 +31,7 @@
   - 실패!
     - PR을 닫는 권한이 없어서 에러가 발생하는것으로 추정됨.
     - `SyntaxError: Invalid or unexpected token`
+  - 불가능 할 것으로 예상됨
+- [ ] QA 코멘트 수정
+  - `/qa`는 너무 흔함.
+  - `/qa go`로 수정
