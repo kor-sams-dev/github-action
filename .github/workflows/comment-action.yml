@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Mearge staging
-        if: contains(github.event.comment.body, '/qa go')
+        if: github.event.comment.body == '/qa'
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
