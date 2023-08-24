@@ -43,6 +43,7 @@
 - [ ] PR 닫을 때 origin 브랜치 삭제되도록 구문 추가.
   - REST API가 없음.
   - 불가.
+- [ ] github Action Comment 기준을 정확하게 /qa로 입력해야 작동하도록 기준 변경
 
 ### 2 스케쥴러로 PR 리스트 가져와서 Slack에 알림 보기.
 
