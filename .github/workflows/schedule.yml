@@ -2,7 +2,8 @@ name: Daily PR List
 
 on:
   schedule:
-    - cron: "45 1 * * *"
+    # 13시 23분 실행 utc -9
+    - cron: "23 4 * * *"
 
 jobs:
   fetch-pr-list:
