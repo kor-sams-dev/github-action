@@ -20,7 +20,7 @@ jobs:
       - name: Get PR info
         id: pr-info
         run: |
-          curl -H 'https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ env.number }}' > pr.json
+          curl 'https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ env.number }}' > pr.json
       - name: Get base branch name
         id: base-branch
         run: |
