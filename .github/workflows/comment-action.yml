@@ -16,22 +16,22 @@ jobs:
 
       - name: Get PR number
         id: pr-number
-        run: echo "number=${{github.event.issue.number }}" >> $GITHUB_ENV
+        run: echo "number=${{github.event.issue.number }}" >> $GITHUB_OUTPUT
       - name: Get PR info
         id: pr-info
         run: |
-          curl 'https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ env.number }}' > pr.json
+          curl 'https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ steps.pr-number.outputs.number }}' > pr.json
       - name: Get base branch name
         id: base-branch
         run: |
           base_branch=$(jq -r '.head.ref' pr.json)
           echo "name=$base_branch" >> $GITHUB_OUTPUT
       - name: Print base branch name
-        run: echo "The base branch name is $ { { steps.base-branch.outputs.name }}"
+        run: echo "The base branch name is ${{steps.base-branch.outputs.name }}"
 
       - name: Merge staging branch
         run: |
-          base_branch_name=${{ steps.get_base_branch.outputs.base_branch }}
+          base_branch_name=${{ steps.base-branch.outputs.name }}
           echo "The base branch name is: $base_branch_name"
 
           git config user.name "github action"
