@@ -36,7 +36,7 @@ jobs:
 
           git config user.name "github action"
           git config user.email "tom@github.com"
-          git checkout -b $base_branch_name
-          git checkout -b staging
+          git checkout -b $base_branch_name origin/$base_branch_name
+          git checkout -b staging origin/staging
           git merge $base_branch_name
           git push origin staging
