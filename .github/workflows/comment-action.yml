@@ -34,6 +34,7 @@ jobs:
           base_branch_name=${{ steps.base-branch.outputs.name }}
           echo "The base branch name is: $base_branch_name"
 
+          git branch --show-current
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b $base_branch_name origin/$base_branch_name
