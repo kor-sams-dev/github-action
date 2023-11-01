@@ -5,101 +5,21 @@ on:
     types: [created]
 
 jobs:
-  pull_request_comment:
-    if: contains(github.event.comment.html_url, '/pull/')
+  ready_to_qa:
+    if: contains(github.event.comment.html_url, '/pull/') && github.event.comment.body == '/qa'
     runs-on: ubuntu-latest
     steps:
-      - name: Mearge staging
-        if: github.event.comment.body == '/qa'
-        uses: actions/github-script@v5
+      - name: Checkout twip-next-fe repository
+        uses: actions/checkout@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // 현재 Pull Request에 대한 정보 불러오기
-            const issue = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-              });
-            console.log('get issue', issue)
+          repository: kor-sams-dev/github-action
 
-            if(!issue.data.head.ref.includes('feature')) return
-            // staging 브랜치로 현재 PR의 feature 브랜치를 병합
-            await github.rest.repos.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo ,
-              base: 'staging',
-              head: issue.data.head.ref
-            });
-            console.log('merge staging')
-
-            try{
-              // During QA 라벨이 있는지 확인
-              await github.rest.issues.getLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'During QA'
-              });
-            } catch(e) {
-              // 없으면 에러가 발생함 
-              // During QA 라벨 생성
-              await github.rest.issues.createLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'During QA',
-                color: 'ff0000'
-              });
-              console.log('create label')
-            }
-
-            // During QA 라벨을 현재 PR에 추가
-            await github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['During QA']
-            });
-            console.log('add label')
-
-            // staging 브랜치에 병합 완료 메시지 남기기
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'staging에 병합 완료되었어요. QA진행 후 /mg go 를 남겨주세요.'
-            })
-            console.log('create comment')
-
-      - name: Merge Pull Request
-        if: contains(github.event.comment.body, '/mg go')
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // 현재 PR 병합
-            await github.rest.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              merge_method: 'merge'
-            });
-            console.log('merge pull request')
-
-            // During QA 라벨을 삭제
-            try{
-              await github.rest.issues.deleteLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'During QA'
-              });
-              console.log('delete label')
-            } catch(e) {}
-
-            // staging 브랜치에 병합 완료 메시지 남기기
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'PR이 마무리 되었습니다. Origin의 feature 브랜치는 삭제되었어요! 고생하셨습니다!🙇‍♂️'
-            });
-            console.log('create comment')
+      - name: Merge staging branch
+        run: |
+          echo ${{ github.event.comment.body }}
+          echo ${{ github.event.comment }}
+          git config user.name "github action"
+          git config user.email "tom@github.com"
+          git checkout -b staging
+          git merge ${{ github.event.comment}}} 
+          git push
