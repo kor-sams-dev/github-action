@@ -32,13 +32,10 @@ jobs:
       - name: Merge staging branch
         run: |
           base_branch_name=${{ steps.base-branch.outputs.name }}
-          git branch --show-current
           git config user.name "github action"
           git config user.email "tom@github.com"
           git fetch -p
           git branch $base_branch_name origin/$base_branch_name
-          git branch --show-current
           git switch staging
-          git branch --show-current
           git merge $base_branch_name
           git push origin staging
