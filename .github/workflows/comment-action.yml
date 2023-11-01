@@ -32,12 +32,11 @@ jobs:
       - name: Merge staging branch
         run: |
           base_branch_name=${{ steps.base-branch.outputs.name }}
-          echo "The base branch name is: $base_branch_name"
-
           git branch --show-current
           git config user.name "github action"
           git config user.email "tom@github.com"
-          git checkout -b $base_branch_name origin/$base_branch_name
-          git checkout -b staging origin/staging
+          git branch -D $base_branch_name
+          git branch $base_branch_name origin/$base_branch_name
+          git switch staging
           git merge $base_branch_name
           git push origin staging
