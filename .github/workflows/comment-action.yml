@@ -20,11 +20,11 @@ jobs:
       - name: Get PR info
         id: pr-info
         run: |
-          curl -H https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ env.number }} > pr.json
+          curl -H 'https://api.github.com/repos/kor-sams-dev/github-action/pulls/${{ env.number }}' > pr.json
       - name: Get base branch name
         id: base-branch
         run: |
-          base_branch=$(jq -r '.base.ref' pr.json)
+          base_branch=$(jq -r '.head.ref' pr.json)
           echo "name=$base_branch" >> $GITHUB_OUTPUT
       - name: Print base branch name
         run: echo "The base branch name is $ { { steps.base-branch.outputs.name }}"
