@@ -14,10 +14,19 @@ jobs:
         with:
           repository: kor-sams-dev/github-action
 
+      - name: Get Base Branch Name
+        id: get_base_branch
+        run: |
+          comment_body=$(jq -r .comment.body $GITHUB_EVENT_PATH)
+          base_branch=$(echo "$comment_body" | sed -n -e 's/^PR-URL: .\+base: \(\S\+\)/\1/p')
+          echo "::set-output name=base_branch::${base_branch}"
+        shell: bash
+
       - name: Merge staging branch
         run: |
-          echo ${{ github.event.issue.number }}
-          echo $GITHUB_EVENT_PATH
+          base_branch_name=${{ steps.get_base_branch.outputs.base_branch }}
+          echo "The base branch name is: $base_branch_name"
+
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b staging
