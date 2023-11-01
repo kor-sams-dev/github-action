@@ -6,7 +6,6 @@ on:
 
 jobs:
   ready_to_qa:
-    if: contains(github.event.comment.html_url, '/pull/') && github.event.comment.body == '/qa'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout twip-next-fe repository
