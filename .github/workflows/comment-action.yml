@@ -35,8 +35,9 @@ jobs:
           git branch --show-current
           git config user.name "github action"
           git config user.email "tom@github.com"
-          git branch -D $base_branch_name
           git branch $base_branch_name origin/$base_branch_name
+          git branch --show-current
           git switch staging
+          git branch --show-current
           git merge $base_branch_name
           git push origin staging
