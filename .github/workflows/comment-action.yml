@@ -17,7 +17,7 @@ jobs:
       - name: Merge staging branch
         run: |
           echo ${{ github.event.comment.body }}
-          echo ${{ github.event.comment }}
+          echo ${{ github.head_ref }}
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b staging
