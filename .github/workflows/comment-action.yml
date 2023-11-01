@@ -1,11 +1,12 @@
 name: Pull request comment
 
 on:
-  pull_request_review_comment:
+  issue_comment:
     types: [created]
 
 jobs:
   ready_to_qa:
+    if: ${{ github.event.issue.pull_request }} && github.event.comment.body == '/qa'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout twip-next-fe repository
@@ -15,7 +16,8 @@ jobs:
 
       - name: Merge staging branch
         run: |
-          echo ${{ github.base_ref }}
+          echo ${{ github.event.issue.number }}
+          echo $GITHUB_EVENT_PATH
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b staging
