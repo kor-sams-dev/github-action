@@ -16,12 +16,7 @@ jobs:
 
       - name: Merge staging branch
         run: |
-          echo ${{ github.event.action }}
-          echo ${{ github.event.issue.pull_request.diff_url }}
-          echo ${{ github.event.issue.pull_request.html_url }}
-          echo ${{ github.event.issue.pull_request.merged_at }}
-          echo ${{ github.event.issue.pull_request.patch_url }}
-          echo ${{ github.event.issue.pull_request.url }}
+          echo ${{ github.base_ref }}
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b staging
