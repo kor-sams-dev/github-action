@@ -14,13 +14,20 @@ jobs:
         with:
           repository: kor-sams-dev/github-action
 
-      - name: Get Base Branch Name
-        id: get_base_branch
+      - name: Get PR number
+        id: pr-number
+        run: echo "number=$ { { github.event.issue.number }}" >> $GITHUB_ENV
+      - name: Get PR info
+        id: pr-info
         run: |
-          comment_body=$(jq -r .comment.body $GITHUB_EVENT_PATH)
-          base_branch=$(echo "$comment_body" | sed -n -e 's/^PR-URL: .\+base: \(\S\+\)/\1/p')
-          echo "::set-output name=base_branch::${base_branch}"
-        shell: bash
+          curl -H "Authorization: token $ { { secrets.GITHUB_TOKEN }}" https://api.github.com/repos/$ { { github.repository }}/pulls/$ { { env.number }} > pr.json
+      - name: Get base branch name
+        id: base-branch
+        run: |
+          base_branch=$(jq -r '.base.ref' pr.json)
+          echo "name=$base_branch" >> $GITHUB_OUTPUT
+      - name: Print base branch name
+        run: echo "The base branch name is $ { { steps.base-branch.outputs.name }}"
 
       - name: Merge staging branch
         run: |
