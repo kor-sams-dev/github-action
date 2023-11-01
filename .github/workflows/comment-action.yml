@@ -37,5 +37,5 @@ jobs:
           git config user.name "github action"
           git config user.email "tom@github.com"
           git checkout -b staging
-          git merge ${{ github.event.comment}}} 
+          git merge $base_branch_name
           git push
