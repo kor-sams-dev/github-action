@@ -15,15 +15,15 @@ jobs:
           notification_title: "{workflow}(${{ github.ref_name }}) has CI/CD 과정이 시작되었습니다. <{run_url}>"
           footer: "Linked to Repo <{repo_url}|{repo}>"
         env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: general
+          SLACK_CHANNEL: test
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/ejnkr.png?size=48
           SLACK_MESSAGE: "Post Content :rocket:"
           SLACK_TITLE: Post Title
           SLACK_USERNAME: rtCamp
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK: "https://hooks.slack.com/services/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"
