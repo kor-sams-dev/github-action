@@ -10,15 +10,5 @@ jobs:
     steps:
       - name: Report Status - Start
         run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.sha }}
-          echo ${{ github.ref }}
-          echo ${{ github.repository }}
-          echo ${{ github.repository_owner }}
-          echo ${{ github.actor }}
           echo ${{ github.workflow }}
-          echo ${{ github.action }}
-          echo ${{ github.action_path }}
-          echo ${{ github.action_ref }}
-          echo ${{ github.action_repository }}
-          echo ${{ github.action_status }}
+          echo https://github.com/kor-sams-dev/github-action/actions/runs/${{ github.run_id }}
