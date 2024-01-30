@@ -2,7 +2,7 @@ name: Pull Request Review Notification
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review]
+    types: [ready_for_review]
 
 jobs:
   build-and-notify:
