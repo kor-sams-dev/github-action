@@ -1,0 +1,22 @@
+name: Pull Request Review Notification
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+jobs:
+  build-and-notify:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+    steps:
+      - name: Slack Notification
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          slack_webhook: ${{ env.SLACK_WEBHOOK }}
+          channel: twip-next-fe-notify
+          color: ${{ job.status }}
+          username: twip-next-fe - Build
+          icon_url: https://assets.mytwip.net/favicon/v2/apple-icon-57x57.png
