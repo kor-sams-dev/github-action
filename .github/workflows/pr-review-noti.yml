@@ -2,7 +2,7 @@ name: Pull Request Review Notification
 
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [opened, ready_for_review]
 
 jobs:
   build-and-notify:
@@ -12,11 +12,18 @@ jobs:
 
     steps:
       - name: Slack Notification
-        if: always()
+        # pr is not ready for review
+        if: github.event.pull_request.draft != true
         uses: rtCamp/action-slack-notify@v2
         with:
           slack_webhook: ${{ env.SLACK_WEBHOOK }}
-          channel: twip-next-fe-notify
+          # channel: twip-next-fe-notify
           color: ${{ job.status }}
           username: twip-next-fe - Build
           icon_url: https://assets.mytwip.net/favicon/v2/apple-icon-57x57.png
+          message: |
+            *PR Review Requested*
+            ${{ github.event.pull_request.html_url }}
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.user.login }}
+            ${{ github.event.pull_request.body }}
